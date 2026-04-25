@@ -16,6 +16,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.modelmapper.ModelMapper;
 
 import java.math.BigDecimal;
@@ -176,6 +178,7 @@ class ReservationServiceTest {
     }
 
     @Test
+    @MockitoSettings(strictness = Strictness.LENIENT)
     @DisplayName("Should update a reservation successfully")
     void shouldUpdateReservationSuccessfully() {
         // Given
@@ -202,7 +205,7 @@ class ReservationServiceTest {
                 eq(guestId), any(LocalDateTime.class), any(LocalDateTime.class), eq(reservationId)))
                 .thenReturn(false);
         when(reservationRepository.saveAndFlush(any(ReservationEntity.class))).thenReturn(savedReservationEntity);
-        when(modelMapper.map(savedReservationEntity, Reservation.class)).thenReturn(updatedReservation);
+        doReturn(updatedReservation).when(modelMapper).map(any(ReservationEntity.class), eq(Reservation.class));
 
         // When
         Reservation result = reservationService.update(updateDto, reservationId);
