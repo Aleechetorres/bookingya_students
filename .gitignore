@@ -41,3 +41,8 @@ out/
 
 # Serenity reports
 **/site/serenity/
+
+# Playwright
+e2e/test-results/
+e2e/playwright-report/
+e2e/node_modules/
